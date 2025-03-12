@@ -5,7 +5,9 @@ import 'package:sissyphus/core/utils/extensions.dart';
 
 import '../../../../core/common_widgets/app_vertical_divider.dart';
 import '../../../../core/utils/app_colors.dart';
+import 'chart_page.dart';
 import 'duration_box.dart';
+import 'order_page.dart';
 
 class CoinDetailsContainer extends StatefulWidget {
   const CoinDetailsContainer({super.key});
@@ -17,17 +19,17 @@ class CoinDetailsContainer extends StatefulWidget {
 class _CoinDetailsContainerState extends State<CoinDetailsContainer>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  bool isOneHour = true;
-  bool isTwoHour = false;
-  bool isFourHour = false;
-  bool isOneDay = false;
-  bool isOneWeek = false;
-  bool isOneMonth = false;
 
   @override
   void initState() {
     _tabController = TabController(length: 3, vsync: this);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -66,7 +68,7 @@ class _CoinDetailsContainerState extends State<CoinDetailsContainer>
                   ?.copyWith(fontSize: 14.sp, color: Colors.white),
               unselectedLabelColor: AppColors.white,
               indicator: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.8), // Active tab color
+                color: AppColors.primaryShade500.withOpacity(0.7),
                 borderRadius: BorderRadius.circular(8.r),
               ),
               tabs: const [
@@ -78,146 +80,18 @@ class _CoinDetailsContainerState extends State<CoinDetailsContainer>
           ).padHorizontal(16),
           16.hi,
           SizedBox(
-            height: .8.sh,
+            height: .5.sh,
             child: TabBarView(
               controller: _tabController,
-              children: [
-                Column(
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50.h,
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: ListView(
-                        
-                          scrollDirection: Axis.horizontal,
-
-                          // padding: EdgeInsets.zero,
-                          // primary: false,
-                          // physics: ClampingScrollPhysics(),
-                          children: [
-                            DurationBox(
-                              onTap: () {},
-                              isActive: false,
-                              label: 'Time',
-                            ),
-                            DurationBox(
-                              onTap: () {
-                                setState(() {
-                                  isOneHour = true;
-                                  isTwoHour = false;
-                                  isFourHour = false;
-                                  isOneDay = false;
-                                  isOneWeek = false;
-                                  isOneMonth = false;
-                                });
-                              },
-                              isActive: isOneHour,
-                              label: '1H',
-                            ),
-                            DurationBox(
-                              onTap: () {
-                                setState(() {
-                                  isOneHour = false;
-                                  isTwoHour = true;
-                                  isFourHour = false;
-                                  isOneDay = false;
-                                  isOneWeek = false;
-                                  isOneMonth = false;
-                                });
-                              },
-                              isActive: isTwoHour,
-                              label: '2H',
-                            ),
-                            DurationBox(
-                              onTap: () {
-                                setState(() {
-                                  isOneHour = false;
-                                  isTwoHour = false;
-                                  isFourHour = true;
-                                  isOneDay = false;
-                                  isOneWeek = false;
-                                  isOneMonth = false;
-                                });
-                              },
-                              isActive: isFourHour,
-                              label: '4H',
-                            ),
-                            DurationBox(
-                              onTap: () {
-                                setState(() {
-                                  isOneHour = false;
-                                  isTwoHour = false;
-                                  isFourHour = false;
-                                  isOneDay = true;
-                                  isOneWeek = false;
-                                  isOneMonth = false;
-                                });
-                              },
-                              isActive: isOneDay,
-                              label: '1D',
-                            ),
-                            DurationBox(
-                              onTap: () {
-                                setState(() {
-                                  isOneHour = false;
-                                  isTwoHour = false;
-                                  isFourHour = false;
-                                  isOneDay = false;
-                                  isOneWeek = true;
-                                  isOneMonth = false;
-                                });
-                              },
-                              isActive: isOneWeek,
-                              label: '1W',
-                            ),
-                            DurationBox(
-                              onTap: () {
-                                setState(() {
-                                  isOneHour = false;
-                                  isTwoHour = false;
-                                  isFourHour = false;
-                                  isOneDay = false;
-                                  isOneWeek = false;
-                                  isOneMonth = true;
-                                });
-                              },
-                              isActive: isOneMonth,
-                              label: '1M',
-                            ),
-                            DurationBox(
-                              onTap: () {},
-                              isActive: false,
-                             child: SvgPicture.asset('down_arrow'.svg),
-                            ),
-                            AppVerticalDivider(),
-                            DurationBox(
-                              onTap: () {},
-                              isActive: false,
-                              child: SvgPicture.asset('chrt_icon'.svg),
-                            ),
-                            DurationBox(
-                              onTap: () {},
-                              isActive: false,
-                              label: 'Fx Indicators',
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                  ],
-                ),
-                Column(
-                  children: [],
-                ),
+              children: const [
+                ChartPage(),
+                OrderBookPage(),
                 Column(
                   children: [],
                 ),
               ],
             ),
-          ).padHorizontal(16),
+          ),
         ],
       ),
     );
