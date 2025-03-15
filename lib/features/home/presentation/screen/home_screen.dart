@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen>
           ).padOnly(right: 16.w),
         ],
       ),
-      backgroundColor: AppColors.primaryShade600,
+      backgroundColor: AppColors.primaryShade900,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen>
                     height: 57.h,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: AppColors.primaryShade600,
+                      color: AppColors.primaryShade900,
                       borderRadius: BorderRadius.circular(8.r),
                       border: Border.all(
                         color: AppColors.borderColor,

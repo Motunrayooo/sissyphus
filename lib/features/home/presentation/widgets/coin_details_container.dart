@@ -48,7 +48,7 @@ class _CoinDetailsContainerState extends State<CoinDetailsContainer>
             height: 57.h,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: AppColors.primaryShade600,
+              color: AppColors.primaryShade900,
               borderRadius: BorderRadius.circular(8.r),
               border: Border.all(
                 color: AppColors.borderColor,

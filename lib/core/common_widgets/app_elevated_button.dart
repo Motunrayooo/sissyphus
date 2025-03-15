@@ -9,12 +9,14 @@ class AppElevatedButton extends StatelessWidget {
     required this.label,
     required this.onTap,
     this.bgColor = AppColors.greenShade500,
+    this.gradient,
     super.key,
   });
 
   final String label;
   final void Function()? onTap;
   Color bgColor;
+  Gradient? gradient;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class AppElevatedButton extends StatelessWidget {
           horizontal: 16.w,
         ),
         decoration: BoxDecoration(
+          gradient: gradient,
           color: bgColor,
           borderRadius: BorderRadius.all(
             Radius.circular(8.r),
