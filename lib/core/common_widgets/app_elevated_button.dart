@@ -10,6 +10,7 @@ class AppElevatedButton extends StatelessWidget {
     required this.onTap,
     this.bgColor = AppColors.greenShade500,
     this.gradient,
+    this.fontSize,
     super.key,
   });
 
@@ -17,6 +18,7 @@ class AppElevatedButton extends StatelessWidget {
   final void Function()? onTap;
   Color bgColor;
   Gradient? gradient;
+  double? fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class AppElevatedButton extends StatelessWidget {
           child: Text(
             label,
             style: context.textTheme.titleSmall?.copyWith(
-              fontSize: 17.sp,
+              fontSize: fontSize ?? 17.sp,
             ),
           ),
         ),

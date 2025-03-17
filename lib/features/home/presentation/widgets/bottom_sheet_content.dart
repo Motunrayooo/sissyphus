@@ -32,6 +32,12 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
     'Fill or kill',
   ];
   String? selectedItem = '';
+  String? selectedCurrency = '';
+  final List<String> currencies = [
+    'NGN',
+    'USD',
+    'EUR',
+  ];
   bool isPostOnly = false;
 
   @override
@@ -144,6 +150,7 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
                         ),
                         16.hi,
                         AppDropdownField(
+                          hintText: 'Select',
                           items: items,
                           value: (selectedItem != null &&
                                   items.contains(selectedItem))
@@ -224,6 +231,7 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
                             end: Alignment.bottomRight,
                           ),
                           label: 'Buy BTC',
+                          fontSize: 14.sp,
                           onTap: () {},
                         ),
                         16.hi,
@@ -234,31 +242,44 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Total account value',
-                                  style: context.textTheme.bodyMedium?.copyWith(
-                                    fontSize: 12.sp,
-                                    color: AppColors.greyShade200,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Total account value',
+                                    style:
+                                        context.textTheme.bodyMedium?.copyWith(
+                                      fontSize: 12.sp,
+                                      color: AppColors.greyShade200,
+                                    ),
                                   ),
-                                ),
-                                8.hi,
-                                Text(
-                                  '0.00',
-                                  style: context.textTheme.titleSmall?.copyWith(
-                                    fontSize: 14.sp,
-                                    color: AppColors.white,
+                                  8.hi,
+                                  Text(
+                                    '0.00',
+                                    style:
+                                        context.textTheme.titleSmall?.copyWith(
+                                      fontSize: 14.sp,
+                                      color: AppColors.white,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                            Text(
-                              'NGN',
-                              style: context.textTheme.bodyMedium?.copyWith(
-                                fontSize: 12.sp,
-                                color: AppColors.greyShade200,
+                            SizedBox(
+                              width: 50.w,
+                              child: AppDropdownField(
+                                items: currencies,
+                                value: (selectedCurrency != null &&
+                                        currencies.contains(selectedCurrency))
+                                    ? selectedCurrency
+                                    : null,
+                                contentPadding: EdgeInsets.zero,
+                                hasBorder: false,
+                                textStyle:    context.textTheme.bodyMedium?.copyWith(
+                                  fontSize: 12.sp,
+                                  color: AppColors.greyShade200,
+                                ),
                               ),
                             ),
                           ],
@@ -307,6 +328,19 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
                               ],
                             ),
                           ],
+                        ),
+                        50.hi,
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: SizedBox(
+                            width: 100.w,
+                            child: AppElevatedButton(
+                              label: 'Deposit',
+                              fontSize: 14.sp,
+                              onTap: () {},
+                              bgColor: AppColors.blue,
+                            ),
+                          ),
                         ),
                       ],
                     ),

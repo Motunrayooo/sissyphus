@@ -20,4 +20,5 @@ class AppColors {
   static const Color purple = Color(0xFF483BEB);
   static const Color lilac = Color(0xFF7847E1);
   static const Color pink = Color(0xFFDD568D);
+  static const Color blue = Color(0xFF2764FF);
 }

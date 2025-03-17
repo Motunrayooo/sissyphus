@@ -5,6 +5,7 @@ import 'package:sissyphus/core/utils/extensions.dart';
 import 'package:sissyphus/features/home/presentation/widgets/showmodal_sheet.dart';
 
 import '../../../../core/common_widgets/app_elevated_button.dart';
+import '../../../../core/common_widgets/custom_menu_pop_up.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../widgets/coin_details_container.dart';
 import '../widgets/value__container.dart';
@@ -62,9 +63,11 @@ class _HomeScreenState extends State<HomeScreen>
             'globe'.svg,
           ),
           16.wi,
-          SvgPicture.asset(
-            'menu'.svg,
-          ).padOnly(right: 16.w),
+          CustomPopupMenu(
+            onItemSelected: (selectedItem) {
+              print("Tapped on: $selectedItem"); // Handle item tap here
+            },
+          ),
         ],
       ),
       backgroundColor: AppColors.primaryShade900,
@@ -222,4 +225,12 @@ class _HomeScreenState extends State<HomeScreen>
   }
 }
 
-
+PopupMenuItem<String> _buildMenuItem(String text) {
+  return PopupMenuItem<String>(
+    value: text,
+    child: Text(
+      text,
+      style: TextStyle(color: Colors.white, fontSize: 16),
+    ),
+  );
+}
