@@ -7,6 +7,7 @@ import 'package:sissyphus/features/home/presentation/widgets/showmodal_sheet.dar
 import '../../../../core/common_widgets/app_elevated_button.dart';
 import '../../../../core/common_widgets/custom_menu_pop_up.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../widgets/candle_stick_chart.dart';
 import '../widgets/coin_details_container.dart';
 import '../widgets/value__container.dart';
 
@@ -59,8 +60,15 @@ class _HomeScreenState extends State<HomeScreen>
             fit: BoxFit.fitHeight,
           ),
           16.wi,
-          SvgPicture.asset(
-            'globe'.svg,
+          GestureDetector(
+            onTap: (){
+              context.push(MaterialPageRoute(builder: (context){
+                return CandleStickChart();
+              }));
+            },
+            child: SvgPicture.asset(
+              'globe'.svg,
+            ),
           ),
           16.wi,
           CustomPopupMenu(
