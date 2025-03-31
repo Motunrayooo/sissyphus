@@ -1,8 +1,13 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:sissyphus/core/utils/extensions.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../../../../core/utils/app_colors.dart';
+import '../../data/binance_candlestick_websocket.dart';
 
 // class CandleStickChart extends StatefulWidget {
 //   @override
@@ -105,19 +110,60 @@ class CandleStickChart extends StatefulWidget {
 
 class _CandleStickChartState extends State<CandleStickChart> {
   late List<ChartSampleData> _chartData;
+  late BinanceWebSocket binanceWebSocket;
+  late TrackballBehavior _trackballBehavior;
+
+  // @override
+  // void initState() {
+  //   _chartData = getChartData();
+  //   _trackballBehavior = TrackballBehavior(
+  //     enable: true,
+  //     activationMode: ActivationMode.singleTap,
+  //   );
+  //   super.initState();
+  // }
 
   @override
   void initState() {
-    _chartData = getChartData();
     super.initState();
+    _chartData = [];
+    _trackballBehavior = TrackballBehavior(
+      enable: true,
+      activationMode: ActivationMode.singleTap,
+    );
+    binanceWebSocket = BinanceWebSocket();
+    binanceWebSocket.onDataReceived = (data) {
+      setState(() {
+        _chartData.add(ChartSampleData(
+          time: data["time"],
+          open: data["open"],
+          high: data["high"],
+          low: data["low"],
+          close: data["close"],
+        ));
+
+        // Keep only the last 30 candles to avoid performance issues
+        if (_chartData.length > 30) {
+          _chartData.removeAt(0);
+        }
+      });
+    };
+    binanceWebSocket.connect();
+  }
+
+  @override
+  void dispose() {
+    binanceWebSocket.disconnect();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return SfCartesianChart(
+      trackballBehavior: _trackballBehavior,
       series: <CandleSeries>[
         CandleSeries<ChartSampleData, DateTime>(
-          xValueMapper: (ChartSampleData sales, _) => sales.x,
+          xValueMapper: (ChartSampleData sales, _) => sales.time,
           lowValueMapper: (ChartSampleData sales, _) => sales.low,
           highValueMapper: (ChartSampleData sales, _) => sales.high,
           openValueMapper: (ChartSampleData sales, _) => sales.open,
@@ -125,138 +171,146 @@ class _CandleStickChartState extends State<CandleStickChart> {
           dataSource: _chartData,
         ),
       ],
-      primaryYAxis: const NumericAxis(
+      primaryYAxis: NumericAxis(
         minimum: 0,
         maximum: 36400.0,
+        opposedPosition: true,
+        labelStyle: context.textTheme.bodyMedium
+            ?.copyWith(fontSize: 8.sp, color: AppColors.greyShade200),
       ),
-      primaryXAxis: const DateTimeAxis(
-       majorGridLines: MajorGridLines(width: 0,),
+      primaryXAxis: DateTimeAxis(
+        edgeLabelPlacement: EdgeLabelPlacement.shift,
+        labelStyle: context.textTheme.bodyMedium
+            ?.copyWith(fontSize: 8.sp, color: AppColors.greyShade200),
+        majorGridLines: const MajorGridLines(
+          width: 0,
+        ),
       ),
-    );
+    ).padHorizontal(1);
   }
 
-  List<ChartSampleData> getChartData() {
-    return <ChartSampleData>[
-      // ChartSampleData(
-      //   x: DateTime(2024, 01, 18),
-      //   open: 92.39,
-      //   high: 95.43,
-      //   low: 91.65,
-      //   close: 95.22,
-      // ),
-      // ChartSampleData(
-      //   x: DateTime(2024, 01, 26),
-      //   open: 95.87,
-      //   high: 100.73,
-      //   low: 96.63,
-      //   close: 100.35
-      // ),
-      // ChartSampleData(
-      //   x: DateTime(2024, 02, 10),
-      //   open: 99.6,
-      //   high: 100.4,
-      //   low: 96.63,
-      //   close: 97.92,
-      // ),
-      // ChartSampleData(
-      //   x: DateTime(2024, 03, 1),
-      //   open: 106.1,
-      //   high: 110.66,
-      //   low: 107.43,
-      //   close: 109.82,
-      // ),
-      // ChartSampleData(
-      //   x: DateTime(2024, 03, 29),
-      //   open: 110,
-      //   high: 114.7,
-      //   low: 108.25,
-      //   close: 113.95,
-      // ),
-      // ChartSampleData(
-      //   x: DateTime(2024, 04, 10),
-      //   open: 113.29,
-      //   high: 116.73,
-      //   low: 112.49,
-      //   close: 115.97,
-      // ),
-      // ChartSampleData(
-      //   x: DateTime(2024, 05, 18),
-      //   open: 115.8,
-      //   high: 117.5,
-      //   low: 115.59,
-      //   close: 116.52,
-      // ),
-      // ChartSampleData(
-      //   x: DateTime(2024, 06, 5),
-      //   open: 116.52,
-      //   high: 118.0166,
-      //   low: 115.43,
-      //   close: 115.82,
-      // ),
-
-      ChartSampleData(
-        x: DateTime(2022, 1, 10),
-        open: 16400,
-        high: 36600,
-        low: 36300,
-        close: 36550,
-      ),
-      ChartSampleData(
-        x: DateTime(2022, 2, 23),
-        open: 26550,
-        high: 6800,
-        low: 16450,
-        close: 36650,
-      ),
-      ChartSampleData(
-        x: DateTime(2022, 3, 13),
-        open: 36650,
-        high: 37000,
-        low: 36500,
-        close: 36850,
-      ),
-      ChartSampleData(
-        x: DateTime(2022, 4, 1),
-        open: 24850,
-        high: 26900,
-        low: 25600,
-        close: 26750,
-      ),
-      ChartSampleData(
-        x: DateTime(2022, 5, 15),
-        open: 36750,
-        high: 37200,
-        low: 36650,
-        close: 37050,
-      ),
-      ChartSampleData(
-        x: DateTime(2022, 5, 26),
-        open: 37050,
-        high: 37400,
-        low: 36900,
-        close: 37250,
-      ),
-      ChartSampleData(
-        x: DateTime(2022, 6, 7),
-        open: 27250,
-        high: 27450,
-        low: 34000,
-        close: 30150,
-      ),
-    ];
-  }
+  // List<ChartSampleData> getChartData() {
+  //   return <ChartSampleData>[
+  //     // ChartSampleData(
+  //     //   x: DateTime(2024, 01, 18),
+  //     //   open: 92.39,
+  //     //   high: 95.43,
+  //     //   low: 91.65,
+  //     //   close: 95.22,
+  //     // ),
+  //     // ChartSampleData(
+  //     //   x: DateTime(2024, 01, 26),
+  //     //   open: 95.87,
+  //     //   high: 100.73,
+  //     //   low: 96.63,
+  //     //   close: 100.35
+  //     // ),
+  //     // ChartSampleData(
+  //     //   x: DateTime(2024, 02, 10),
+  //     //   open: 99.6,
+  //     //   high: 100.4,
+  //     //   low: 96.63,
+  //     //   close: 97.92,
+  //     // ),
+  //     // ChartSampleData(
+  //     //   x: DateTime(2024, 03, 1),
+  //     //   open: 106.1,
+  //     //   high: 110.66,
+  //     //   low: 107.43,
+  //     //   close: 109.82,
+  //     // ),
+  //     // ChartSampleData(
+  //     //   x: DateTime(2024, 03, 29),
+  //     //   open: 110,
+  //     //   high: 114.7,
+  //     //   low: 108.25,
+  //     //   close: 113.95,
+  //     // ),
+  //     // ChartSampleData(
+  //     //   x: DateTime(2024, 04, 10),
+  //     //   open: 113.29,
+  //     //   high: 116.73,
+  //     //   low: 112.49,
+  //     //   close: 115.97,
+  //     // ),
+  //     // ChartSampleData(
+  //     //   x: DateTime(2024, 05, 18),
+  //     //   open: 115.8,
+  //     //   high: 117.5,
+  //     //   low: 115.59,
+  //     //   close: 116.52,
+  //     // ),
+  //     // ChartSampleData(
+  //     //   x: DateTime(2024, 06, 5),
+  //     //   open: 116.52,
+  //     //   high: 118.0166,
+  //     //   low: 115.43,
+  //     //   close: 115.82,
+  //     // ),
+  //
+  //     ChartSampleData(
+  //       time: DateTime(2022, 1, 10),
+  //       open: 16400,
+  //       high: 36600,
+  //       low: 36300,
+  //       close: 36550,
+  //     ),
+  //     ChartSampleData(
+  //       time: DateTime(2022, 2, 23),
+  //       open: 26550,
+  //       high: 6800,
+  //       low: 16450,
+  //       close: 36650,
+  //     ),
+  //     ChartSampleData(
+  //       time: DateTime(2022, 3, 13),
+  //       open: 36650,
+  //       high: 37000,
+  //       low: 36500,
+  //       close: 36850,
+  //     ),
+  //     ChartSampleData(
+  //       time: DateTime(2022, 4, 1),
+  //       open: 24850,
+  //       high: 26900,
+  //       low: 25600,
+  //       close: 26750,
+  //     ),
+  //     ChartSampleData(
+  //       time: DateTime(2022, 5, 15),
+  //       open: 36750,
+  //       high: 37200,
+  //       low: 36650,
+  //       close: 37050,
+  //     ),
+  //     ChartSampleData(
+  //       time: DateTime(2022, 5, 26),
+  //       open: 37050,
+  //       high: 37400,
+  //       low: 36900,
+  //       close: 37250,
+  //     ),
+  //     ChartSampleData(
+  //       time: DateTime(2022, 6, 7),
+  //       open: 27250,
+  //       high: 27450,
+  //       low: 34000,
+  //       close: 30150,
+  //     ),
+  //   ];
+  // }
 }
 
 class ChartSampleData {
   ChartSampleData({
-    this.x,
+    this.time,
     this.open,
     this.close,
     this.low,
     this.high,
   });
 
-  final DateTime? x;
+  final DateTime? time;
   final num? open;
   final num? close;
   final num? low;

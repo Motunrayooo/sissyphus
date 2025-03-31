@@ -80,7 +80,7 @@ class _CoinDetailsContainerState extends State<CoinDetailsContainer>
           ).padHorizontal(16),
           16.hi,
           SizedBox(
-            height: .5.sh,
+            height: .6.sh,
             child: TabBarView(
               controller: _tabController,
               children: const [

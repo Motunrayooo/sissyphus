@@ -5,6 +5,7 @@ import 'package:sissyphus/core/utils/extensions.dart';
 
 import '../../../../core/common_widgets/app_vertical_divider.dart';
 import '../../../../core/utils/app_colors.dart';
+import 'candle_stick_chart.dart';
 import 'duration_box.dart';
 
 class ChartPage extends StatefulWidget {
@@ -184,6 +185,8 @@ class _ChartPageState extends State<ChartPage> {
         const Divider(
           color: AppColors.borderColor,
         ),
+        10.hi,
+        CandleStickChart()
       ],
     );
   }

@@ -1,0 +1,2 @@
+C:/Users/HP/StudioProjects/sissyphus/android/app/.cxx/RelWithDebInfo/3c4x1y6d/x86/CMakeFiles/edit_cache.dir
+C:/Users/HP/StudioProjects/sissyphus/android/app/.cxx/RelWithDebInfo/3c4x1y6d/x86/CMakeFiles/rebuild_cache.dir
